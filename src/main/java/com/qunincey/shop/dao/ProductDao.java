@@ -1,5 +1,6 @@
 package com.qunincey.shop.dao;
 
+import com.qunincey.shop.bean.Category;
 import com.qunincey.shop.bean.Product;
 import com.qunincey.shop.utils.DataSourceUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -22,6 +23,12 @@ public class ProductDao {
         QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());
         String sql=" select * from product order by  pdate desc limit ?,? ";
         return qr.query(sql,new BeanListHandler<Product>(Product.class),0,9);
+    }
+
+    public List<Category> findCategroy()throws SQLException{
+            QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());
+            String sql=" select * from category ";
+            return qr.query(sql,new BeanListHandler<Category>(Category.class));
     }
 
 

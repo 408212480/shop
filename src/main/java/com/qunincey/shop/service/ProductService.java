@@ -1,5 +1,6 @@
 package com.qunincey.shop.service;
 
+import com.qunincey.shop.bean.Category;
 import com.qunincey.shop.bean.Product;
 import com.qunincey.shop.dao.ProductDao;
 
@@ -29,7 +30,15 @@ public class ProductService {
             e.printStackTrace();
         }
         return list;
-
-
+    }
+    public List<Category> findCategroy(){
+        ProductDao product=new ProductDao();
+        List<Category> list=null;
+        try {
+            list=product.findCategroy();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

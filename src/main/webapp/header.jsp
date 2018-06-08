@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <!-- 登录 注册 购物车... -->
 <div class="container-fluid">
@@ -35,11 +37,10 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="product_list.htm">手机数码<span class="sr-only">(current)</span></a></li>
-					<li><a href="#">电脑办公</a></li>
-					<li><a href="#">电脑办公</a></li>
-					<li><a href="#">电脑办公</a></li>
+				<ul class="nav navbar-nav" id="category">
+					<%--<c:forEach items="${Category}" var="category">--%>
+						<%--<li><a href="#">${category.cname}</a></li>--%>
+					<%--</c:forEach> --%>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="form-group">
@@ -48,6 +49,35 @@
 					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
 			</div>
+			<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+			<script>
+				<%--$(function () {--%>
+					<%--var content="";--%>
+                    <%--var request=$.ajax({--%>
+                        <%--type:"GET",--%>
+                        <%--url:"${pageContext.request.contextPath}/CategoryList",--%>
+                    <%--})--%>
+                    <%--request.done(function (msg) {--%>
+                        <%--for(var i in msg){--%>
+                            <%--content+="<li><a href='#'>"+msg[i].cname+"</a></li>";--%>
+                        <%--}--%>
+                        <%--$("#category").html(content);--%>
+                    <%--})--%>
+                <%--})--%>
+				$(function () {
+					var content="";
+					$.post(
+					    "${pageContext.request.contextPath}/CategoryList",function (data) {
+					        for (var i=0;i<data.length;i++){
+					            content+="<li><a href='#'>"+data[i].cname+"</a></li>"
+							}
+                            $("#category").html(content);
+                        },"json"
+					);
+                })
+
+
+			</script>
 		</div>
 	</nav>
 </div>
