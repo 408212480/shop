@@ -4,6 +4,9 @@ package com.qunincey.shop.web.servlet;
 import com.google.gson.Gson;
 import com.qunincey.shop.bean.Category;
 import com.qunincey.shop.service.ProductService;
+import com.qunincey.shop.utils.JedisPoolUtils;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,12 +26,18 @@ public class CategoryList extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductService proS=new ProductService();
-        //        查找分类
-        List<Category> category=proS.findCategroy();
+
+        Jedis jedis= JedisPoolUtils.getJedis();
+        String categoryListjson=jedis.get("categoryList");
+        if (categoryListjson==null){
+            ProductService proS=new ProductService();
+            //        查找分类
+            List<Category> category=proS.findCategroy();
+            Gson gson=new Gson();
+            categoryListjson=gson.toJson(category);
+            jedis.set("categoryListjson",categoryListjson);
+        }
         resp.setContentType("text/html;charset=UTF-8");
-        Gson gson=new Gson();
-        String json=gson.toJson(category);
-        resp.getWriter().write(json);
+        resp.getWriter().write(categoryListjson);
     }
 }
