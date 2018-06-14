@@ -69,7 +69,7 @@
 					$.post(
 					    "${pageContext.request.contextPath}/CategoryList",function (data) {
 					        for (var i=0;i<data.length;i++){
-					            content+="<li><a href='#'>"+data[i].cname+"</a></li>"
+					            content+="<li><a href='${pageContext.request.contextPath}/productListByCid?cid="+data[i].cid+"'>"+data[i].cname+"</a></li>";
 							}
                             $("#category").html(content);
                         },"json"
