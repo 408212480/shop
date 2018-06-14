@@ -46,4 +46,12 @@ public class producttest {
         String json=gson.toJson(list);
         System.out.println(json);
     }
+
+    @Test
+    public void findProductInfo(){
+        ProductService productService=new ProductService();
+        Product pro=productService.findProductInfo("1");
+        System.out.println(pro.toString());
+
+    }
 }

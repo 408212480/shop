@@ -4,6 +4,7 @@ import com.qunincey.shop.bean.Category;
 import com.qunincey.shop.bean.Product;
 import com.qunincey.shop.utils.DataSourceUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
@@ -44,6 +45,14 @@ public class ProductDao {
         String sql=" select * from product where cid =? limit ?,? ";
         List<Product> list=qr.query(sql,new BeanListHandler<Product>(Product.class),cid,index,CurrentCount);
         return  list;
+    }
+
+    public Product findProductInfo(int pid) throws SQLException {
+        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());
+        String sql=" select * from product where pid= ? ";
+        return qr.query(sql,new BeanHandler<Product>(Product.class),pid);
+
+
     }
 
 

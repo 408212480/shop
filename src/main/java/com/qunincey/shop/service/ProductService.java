@@ -71,4 +71,15 @@ public class ProductService {
         pageBean.setList(list);
         return pageBean;
     }
+
+    public Product findProductInfo(String pid){
+        ProductDao productDao=new ProductDao();
+        Product product=null;
+        try {
+            product=productDao.findProductInfo(Integer.parseInt(pid));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
 }
