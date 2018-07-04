@@ -132,6 +132,16 @@
       <version>2.9.0</version>
     </dependency>
 
+    <!--
+      freemark模板引擎
+    -->
+    <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.23</version>
+    </dependency>
+
 
   </dependencies>
 

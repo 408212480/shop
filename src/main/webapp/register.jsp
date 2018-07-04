@@ -41,7 +41,7 @@ font {
 	    var flag=false;
 		$.ajax({
 			"async":false,
-			"url":"${pageContext.request.contextPath}/checkusername",
+			"url":"${pageContext.request.contextPath}/user?method=checkusername",
 			"data":{"username":value},
 			"type":"POST",
 			"dataType":"json",

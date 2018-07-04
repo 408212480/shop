@@ -80,6 +80,7 @@ body {
 								value="加入购物车" type="button">
 							</a> &nbsp;收藏商品
 						</div>
+						<a href="product_list.jsp">返回列表页面</a>
 					</div>
 				</div>
 			</div>
@@ -92,7 +93,7 @@ body {
 
 				<div>
 					<img
-						src="${product.pimage}">
+						src="${pageContext.request.contextPath}/${product.pimage}">
 				</div>
 
 				<div

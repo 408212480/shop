@@ -1,0 +1,15 @@
+<html>
+<head>
+  <title>Welcome!</title>
+</head>
+<body>
+
+  <h1>Welcome</h1>
+  <p>We have these animals
+  <ul>
+
+   ${product.pname}${product.market_price}
+
+  </ul>
+</body>
+</html>

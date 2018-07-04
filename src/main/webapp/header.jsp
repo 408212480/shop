@@ -33,7 +33,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">首页</a>
+				<a class="navbar-brand" href="/index.jsp">首页</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -67,9 +67,9 @@
 				$(function () {
 					var content="";
 					$.post(
-					    "${pageContext.request.contextPath}/CategoryList",function (data) {
+					    "${pageContext.request.contextPath}/product?method=CategoryList",function (data) {
 					        for (var i=0;i<data.length;i++){
-					            content+="<li><a href='${pageContext.request.contextPath}/productListByCid?cid="+data[i].cid+"'>"+data[i].cname+"</a></li>";
+					            content+="<li><a href='${pageContext.request.contextPath}/product?method=ProductListByid&cid="+data[i].cid+"'>"+data[i].cname+"</a></li>";
 							}
                             $("#category").html(content);
                         },"json"
