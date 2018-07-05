@@ -2,52 +2,30 @@ package com.qunincey.shop.web.servlet;
 
 
 import com.google.gson.Gson;
+import com.qunincey.shop.bean.Cart;
+import com.qunincey.shop.bean.CartItem;
 import com.qunincey.shop.bean.Category;
 import com.qunincey.shop.bean.PageBean;
 import com.qunincey.shop.service.ProductService;
+import com.qunincey.shop.utils.FreemarkUtil;
 import com.qunincey.shop.utils.JedisPoolUtils;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Writer;
+import java.util.*;
 
 @WebServlet(name = "product",urlPatterns = "/product")
-public class Product extends HttpServlet{
-
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String methodName=req.getParameter("method");
-        switch (methodName){
-            case "CategoryList":
-                CategoryList(req,resp);
-                break;
-            case "ProductListByid":
-                ProductListByid(req,resp);
-                break;
-            case "ProductInfo":
-                ProductInfo(req,resp);
-                break;
-            case "indexProduct":
-                indexProduct(req,resp);
-                break;
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
-    }
+public class Product extends BaseServlet{
 
     /*
     * 获取商品类别
@@ -166,6 +144,71 @@ public class Product extends HttpServlet{
         Cookie cookie_pids=new Cookie("pids",pids);
         resp.addCookie(cookie_pids);
         req.getRequestDispatcher("/product_info.jsp").forward(req,resp);
+    }
+
+    public void addProductCart(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession  session=req.getSession();
+        String pid=req.getParameter("pid");
+        String buyNum=req.getParameter("buyNum");
+
+        ProductService pro=new ProductService();
+        com.qunincey.shop.bean.Product product=pro.findProductInfo(pid);
+        /*
+        * 计算当个商品的金额
+        * */
+        double subtotal=product.getShop_price()*Integer.parseInt(buyNum);
+        CartItem cartItem=new CartItem(product,Integer.parseInt(buyNum),subtotal);
+
+        Cart cart= (Cart) session.getAttribute("cart");
+        if (cart==null){
+            cart=new Cart();
+        }
+        //判断该商品是否已经在购物车中
+        if (cart.getCartItems().containsKey(pid)){
+            CartItem cartItem1=cart.getCartItems().get(pid);
+            cartItem.setBuyNum(cartItem1.getBuyNum()+cartItem.getBuyNum());
+            cart.getCartItems().put(product.getPid(),cartItem);
+        }else {
+            cart.getCartItems().put(product.getPid(),cartItem);
+        }
+        /*
+         计算总金额
+        */
+        double totle=cart.getTotle()+cartItem.getSubTotal();
+        cart.setTotle(totle);
+        session.setAttribute("cart",cart);
+
+       /* Map<String, Object> root = new HashMap<>();
+        root.put("cart",cart);
+        FreemarkUtil fu=new FreemarkUtil(req);
+        Configuration cfg=fu.getCfg();
+        Template template=cfg.getTemplate("cart.ftl");
+        resp.setContentType("text/html;charset="+template.getEncoding());
+        Writer writer=resp.getWriter();
+        try {
+            template.process(root,writer);
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        }*/
+        resp.sendRedirect(req.getContextPath()+"/cart.jsp");
+
+    }
+
+    public void delProFormCart(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String pid=req.getParameter("pid");
+        HttpSession session=req.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart!=null){
+            Map<String,CartItem> cartItemMap=cart.getCartItems();
+            cartItemMap.remove(pid);
+            cart.setCartItems(cartItemMap);
+            cart.setTotle(cart.getTotle()-cartItemMap.get(pid).getSubTotal());
+        }
+        session.setAttribute("cart",cart);
+
+        resp.sendRedirect(req.getContextPath()+"/cart.jsp");
+
     }
 
 

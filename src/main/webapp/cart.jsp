@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -28,6 +30,14 @@
 				padding: 0 10px;
 			}
 		</style>
+
+		<script type="text/javascript">
+			function delProFormCart(pid) {
+				if (confirm("你确定要删除吗？")){
+				    location.href="${pageContext.request.contextPath}/product?method=delProFormCart&pid=pid";
+				}
+            }
+		</script>
 	</head>
 
 	<body>
@@ -49,27 +59,31 @@
 								<th>小计</th>
 								<th>操作</th>
 							</tr>
-							<tr class="active">
-								<td width="60" width="40%">
-									<input type="hidden" name="id" value="22">
-									<img src="./image/dadonggua.jpg" width="70" height="60">
-								</td>
-								<td width="30%">
-									<a target="_blank"> 有机蔬菜      大冬瓜...</a>
-								</td>
-								<td width="20%">
-									￥298.00
-								</td>
-								<td width="10%">
-									<input type="text" name="quantity" value="1" maxlength="4" size="10">
-								</td>
-								<td width="15%">
-									<span class="subtotal">￥596.00</span>
-								</td>
-								<td>
-									<a href="javascript:;" class="delete">删除</a>
-								</td>
-							</tr>
+
+							<c:forEach items="${cart.cartItems}" var="entry">
+								<tr class="active">
+									<td width="60" width="40%">
+										<input type="hidden" name="id" value="22">
+										<img src="${pageContext.request.contextPath}/${entry.value.product.pimage}" width="70" height="60">
+									</td>
+									<td width="30%">
+										<a target="_blank">${entry.value.product.pname}</a>
+									</td>
+									<td width="20%">
+										￥${entry.value.product.shop_price}
+									</td>
+									<td width="10%">
+										<input type="text" name="quantity" value="${entry.value.buyNum}" maxlength="4" size="10">
+									</td>
+									<td width="15%">
+										<span class="subtotal">￥${entry.value.subTotal}</span>
+									</td>
+									<td>
+										<a href="javascript:void(0)" onclick="delProFormCart('${entry.value.pid}')" class="delete">删除</a>
+									</td>
+								</tr>
+							</c:forEach>
+
 						</tbody>
 					</table>
 				</div>
@@ -79,7 +93,7 @@
 				<div style="text-align:right;">
 					<em style="color:#ff6600;">
 				登录后确认是否享有优惠&nbsp;&nbsp;
-			</em> 赠送积分: <em style="color:#ff6600;">596</em>&nbsp; 商品金额: <strong style="color:#ff6600;">￥596.00元</strong>
+			</em> 赠送积分: <em style="color:#ff6600;">596</em>&nbsp; 商品金额: <strong style="color:#ff6600;">${cart.getTotle()}</strong>
 				</div>
 				<div style="text-align:right;margin-top:10px;margin-bottom:10px;">
 					<a href="order_info.htm" id="clear" class="clear">清空购物车</a>

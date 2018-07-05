@@ -22,29 +22,7 @@ import java.util.Date;
 import java.util.Map;
 
 @WebServlet(name = "User",urlPatterns = "/user")
-public class User extends HttpServlet{
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String methodName=req.getParameter("method");
-        switch (methodName){
-            case "registered":
-                registered(req,resp);
-                break;
-            case "activeCode":
-                activeCode(req,resp);
-                break;
-            case "checkusername":
-                checkusername(req,resp);
-                break;
-        }
-    }
+public class User extends BaseServlet{
     /*
     * 注册账号
     * */
