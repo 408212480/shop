@@ -13,10 +13,17 @@
 	</div>
 	<div class="col-md-3" style="padding-top:20px">
 		<ol class="list-inline">
-			<li><a href="login.jsp">登录</a></li>
-			<li><a href="register.jsp">注册</a></li>
+			<c:choose>
+				<c:when test="${ not empty user}">
+					welcome! ${user.getUsername()}
+				</c:when>
+				<c:otherwise>
+					<li><a href="login.jsp">登录</a></li>
+					<li><a href="register.jsp">注册</a></li>
+				</c:otherwise>
+			</c:choose>
 			<li><a href="cart.jsp">购物车</a></li>
-			<li><a href="order_list.jsp">我的订单</a></li>
+			<li><a href="${pageContext.request.contextPath}/product?method=myOrders">我的订单</a></li>
 		</ol>
 	</div>
 </div>

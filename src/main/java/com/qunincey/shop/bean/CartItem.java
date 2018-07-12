@@ -6,6 +6,9 @@ public class CartItem {
     private int buyNum;//购买的数量
     private double subTotal;//小计
 
+    public CartItem() {
+    }
+
     public CartItem(Product product, int buyNum, double subTotal) {
         this.product = product;
         this.buyNum = buyNum;

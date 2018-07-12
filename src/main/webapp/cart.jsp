@@ -34,7 +34,7 @@
 		<script type="text/javascript">
 			function delProFormCart(pid) {
 				if (confirm("你确定要删除吗？")){
-				    location.href="${pageContext.request.contextPath}/product?method=delProFormCart&pid=pid";
+				    location.href="${pageContext.request.contextPath}/product?method=delProFormCart&pid="+pid;
 				}
             }
 		</script>
@@ -79,7 +79,7 @@
 										<span class="subtotal">￥${entry.value.subTotal}</span>
 									</td>
 									<td>
-										<a href="javascript:void(0)" onclick="delProFormCart('${entry.value.pid}')" class="delete">删除</a>
+										<a href="javascript:void(0)" onclick="delProFormCart('${entry.value.getProduct().getPid()}')" class="delete">删除</a>
 									</td>
 								</tr>
 							</c:forEach>
@@ -97,8 +97,8 @@
 				</div>
 				<div style="text-align:right;margin-top:10px;margin-bottom:10px;">
 					<a href="order_info.htm" id="clear" class="clear">清空购物车</a>
-					<a href="order_info.htm">
-						<input type="submit" width="100" value="提交订单" name="submit" border="0" style="background: url('./images/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+					<a href="${pageContext.request.contextPath}/product?method=submitOrder">
+						<input type="button" width="100" value="提交订单" name="submit" border="0" style="background: url('./images/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
 						height:35px;width:100px;color:white;">
 					</a>
 				</div>

@@ -6,6 +6,7 @@ import com.qunincey.shop.bean.Product;
 import com.qunincey.shop.service.ProductService;
 import org.junit.Test;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -52,6 +53,13 @@ public class producttest {
         ProductService productService=new ProductService();
         Product pro=productService.findProductInfo("1");
         System.out.println(pro.toString());
+
+    }
+
+    @Test
+    public void addOrder(){
+        ProductService productService=new ProductService();
+       /* Product pro=productService.submitOrder("1");*/
 
     }
 }

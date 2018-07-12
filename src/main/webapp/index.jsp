@@ -75,13 +75,13 @@
 							<img src="products/hao/middle01.jpg" width="516px" height="200px" style="display: inline-block;">
 						</a>
 					</div>
-					<c:forEach items="${HotProduct}" var="hotproduct">
+					<c:forEach items="${historyProduct}" var="historyProduct">
 						<div class="col-md-2" style="text-align:center;height:200px;padding:10px 0px;">
 							<a href="product_info.htm">
-								<img src= "${pageContext.request.contextPath}/${hotproduct.getPimage()}" width="130" height="130" style="display: inline-block;">
+								<img src= "${pageContext.request.contextPath}/${historyProduct.getPimage()}" width="130" height="130" style="display: inline-block;">
 							</a>
-							<p><a href="product_info.html" style='color:#666'>${hotproduct.getPname()}</a></p>
-							<p><font color="#E4393C" style="font-size:16px">&yen;${hotproduct.getShop_price()}</font></p>
+							<p><a href="product_info.html" style='color:#666'>${historyProduct.getPname()}</a></p>
+							<p><font color="#E4393C" style="font-size:16px">&yen;${historyProduct.getShop_price()}</font></p>
 						</div>
 					</c:forEach>
 				</div>

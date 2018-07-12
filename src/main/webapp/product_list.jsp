@@ -114,15 +114,17 @@ body {
 		</div>
 		<div style="clear: both;"></div>
 
-		<c:forEach items="${historyProduct}">
+
 			<div style="overflow: hidden;">
 				<ul style="list-style: none;">
+					<c:forEach items="${historyProduct}" var="historyProduct">
 					<li style="width: 150px; height: 216px; float: left; margin: 0 8px 0 0; padding: 0 18px 15px; text-align: center;">
-						<img src="${historyProduct.pimage}" width="130px" height="130px" />
+						<img src="${historyProduct.getPimage()}" width="130px" height="130px" />
 					</li>
+					</c:forEach>
 				</ul>
 			</div>
-		</c:forEach>
+
 
 		<%----%>
 	</div>

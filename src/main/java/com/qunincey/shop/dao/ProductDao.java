@@ -1,15 +1,18 @@
 package com.qunincey.shop.dao;
 
 import com.qunincey.shop.bean.Category;
+import com.qunincey.shop.bean.Order;
+import com.qunincey.shop.bean.OrderItem;
 import com.qunincey.shop.bean.Product;
 import com.qunincey.shop.utils.DataSourceUtils;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.dbutils.handlers.*;
+import sun.security.x509.OIDMap;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDao {
 
@@ -54,6 +57,62 @@ public class ProductDao {
 
 
     }
+    /*
+    向order表插入数据
+    */
+    public void addOrders(Order order ){
+        QueryRunner qr=new QueryRunner();
+        String sql=" insert into orders values (?,?,?,?,?,?,?,?) ";
+        try {
+            Connection conn=DataSourceUtils.getConnection();
+            qr.update(conn,sql,order.getOid(),order.getOrdertime(),order.getTotal(),order.getState()
+                       ,order.getAddress(),order.getName(),order.getTelephone(),order.getUser().getUid());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /*
+    * 向orderitem表插入数据
+    * */
+    public void addOrderItem(Order order){
+        QueryRunner qr=new QueryRunner();
+        String sql=" insert into orderitem values (?,?,?,?,?) ";
+        try {
+            Connection conn=DataSourceUtils.getConnection();
+            List<OrderItem> orderItem=order.getOrderItems();
+            for (OrderItem item:
+                 orderItem) {
+                qr.update(conn,sql,item.getItemid(),item.getCount(),item.getSubtotal(),item.getProduct().getPid(),item.getOrder().getOid());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void updateAdrr(Order order) throws SQLException {
+        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());
+        String sql=" update orders set address=?,name=?,telephone=? where uid=? ";
+        qr.update(sql,order.getAddress(),order.getName(),order.getTelephone(),order.getOid());
+    }
+
+    public List<Order> findOrderById(String uid) throws SQLException {
+        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());
+        String sql=" select * from orders where uid=? ";
+        return qr.query(sql,new BeanListHandler<Order>(Order.class),uid);
+
+    }
+
+    public List<Map<String,Object>> findOrderItemById(String oid) throws SQLException {
+        QueryRunner qr=new QueryRunner(DataSourceUtils.getDataSource());
+        String sql=" select i.count,i.subtotal,p.pimage,p.pname,p.shop_price from orderitem i,product p where i.pid=p.pid and i.oid= ? ";
+        List<Map<String,Object>> maplist=qr.query(sql,new MapListHandler(),oid);
+        return maplist;
+    }
+
 
 
 }

@@ -47,4 +47,13 @@ public class UserDao {
         Long rows=qr.query(check,new ScalarHandler<Long>(1),username);
         return rows;
     }
+
+    public User login(String username, String password) throws SQLException {
+
+        QueryRunner runner = new QueryRunner(DataSourceUtils.getDataSource());
+        String sql = "select * from user where username=? and password=?";
+        return runner.query(sql, new BeanHandler<User>(User.class), username,password);
+
+
+    }
 }

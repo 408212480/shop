@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +37,13 @@ font {
 	padding-right: 17px;
 }
 </style>
+	<script type="text/javascript">
+		function login() {
+			var username=$("#username").val();
+			var password=$("#password").val();
+            location.href="${pageContext.request.contextPath}/user?method=login&username="+username+"&password="+password;
+        }
+	</script>
 </head>
 <body>
 
@@ -54,7 +63,7 @@ font {
 					style="width: 440px; border: 1px solid #E7E7E7; padding: 20px 0 20px 30px; border-radius: 5px; margin-top: 60px; background: #fff;">
 					<font>会员登录</font>USER LOGIN
 					<div>&nbsp;</div>
-					<form class="form-horizontal">
+					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/user?method=login">
 						<div class="form-group">
 							<label for="username" class="col-sm-2 control-label">用户名</label>
 							<div class="col-sm-6">
@@ -65,7 +74,7 @@ font {
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">密码</label>
 							<div class="col-sm-6">
-								<input type="password" class="form-control" id="inputPassword3"
+								<input type="password" class="form-control" id="password"
 									placeholder="请输入密码">
 							</div>
 						</div>
@@ -91,7 +100,7 @@ font {
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<input type="submit" width="100" value="登录" name="submit"
+								<input type="button" href="javascript:void(0)" onclick="login()" width="100" value="登录" name="submit"
 									style="background: url('./images/login.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0); height: 35px; width: 100px; color: white;">
 							</div>
 						</div>

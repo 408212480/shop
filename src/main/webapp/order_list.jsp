@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
+<%@page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 
@@ -36,9 +38,11 @@ body {
 			<div style="margin: 0 auto; margin-top: 10px; width: 950px;">
 				<strong>我的订单</strong>
 				<table class="table table-bordered">
-					<tbody>
+
+					<c:forEach items="${userOrder}" var="OrderList">
+						<tbody>
 						<tr class="success">
-							<th colspan="5">订单编号:9005</th>
+							<th colspan="5">订单编号:${OrderList.getOid()}</th>
 						</tr>
 						<tr class="warning">
 							<th>图片</th>
@@ -47,79 +51,26 @@ body {
 							<th>数量</th>
 							<th>小计</th>
 						</tr>
-						<tr class="active">
-							<td width="60" width="40%"><input type="hidden" name="id"
-								value="22"> <img src="./image/dadonggua.jpg" width="70"
-								height="60"></td>
-							<td width="30%"><a target="_blank"> 有机蔬菜 大冬瓜...</a></td>
-							<td width="20%">￥298.00</td>
-							<td width="10%">5</td>
-							<td width="15%"><span class="subtotal">￥596.00</span></td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="success">
-							<th colspan="5">订单编号:9004</th>
-						</tr>
-						<tr class="warning">
-							<th>图片</th>
-							<th>商品</th>
-							<th>价格</th>
-							<th>数量</th>
-							<th>小计</th>
-						</tr>
-						<tr class="active">
-							<td width="60" width="40%"><input type="hidden" name="id"
-								value="22"> <img src="./image/dadonggua.jpg" width="70"
-								height="60"></td>
-							<td width="30%"><a target="_blank"> 有机蔬菜 大冬瓜...</a></td>
-							<td width="20%">￥298.00</td>
-							<td width="10%">5</td>
-							<td width="15%"><span class="subtotal">￥596.00</span></td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="success">
-							<th colspan="5">订单编号:9003</th>
-						</tr>
-						<tr class="warning">
-							<th>图片</th>
-							<th>商品</th>
-							<th>价格</th>
-							<th>数量</th>
-							<th>小计</th>
-						</tr>
-						<tr class="active">
-							<td width="60" width="40%"><input type="hidden" name="id"
-								value="22"> <img src="./image/dadonggua.jpg" width="70"
-								height="60"></td>
-							<td width="30%"><a target="_blank"> 有机蔬菜 大冬瓜...</a></td>
-							<td width="20%">￥298.00</td>
-							<td width="10%">5</td>
-							<td width="15%"><span class="subtotal">￥596.00</span></td>
-						</tr>
-					</tbody>
-					<tbody>
-						<tr class="success">
-							<th colspan="5">订单编号:9002</th>
-						</tr>
-						<tr class="warning">
-							<th>图片</th>
-							<th>商品</th>
-							<th>价格</th>
-							<th>数量</th>
-							<th>小计</th>
-						</tr>
-						<tr class="active">
-							<td width="60" width="40%"><input type="hidden" name="id"
-								value="22"> <img src="./image/dadonggua.jpg" width="70"
-								height="60"></td>
-							<td width="30%"><a target="_blank"> 有机蔬菜 大冬瓜...</a></td>
-							<td width="20%">￥298.00</td>
-							<td width="10%">5</td>
-							<td width="15%"><span class="subtotal">￥596.00</span></td>
-						</tr>
-					</tbody>
+						<c:forEach items="${OrderList.getOrderItems()}" var="OrderItems">
+							<tr class="active">
+								<td width="60" width="40%">
+									<input type="hidden" name="id" value="22">
+									<img src="${OrderItems.getProduct().getPimage()}" width="70" height="60">
+								</td>
+								<td width="30%"><a target="_blank">${OrderItems.getProduct().getPname()}</a></td>
+								<td width="20%">￥${OrderItems.getProduct().getShop_price()}</td>
+								<td width="10%">${OrderItems.getCount()}</td>
+								<td width="15%"><span class="subtotal">￥${OrderItems.getSubtotal()}</span></td>
+							</tr>
+						</c:forEach>
+
+						</tbody>
+
+					</c:forEach>
+
+
+
+
 				</table>
 			</div>
 		</div>

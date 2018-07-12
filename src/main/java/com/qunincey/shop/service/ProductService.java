@@ -1,12 +1,12 @@
 package com.qunincey.shop.service;
 
-import com.qunincey.shop.bean.Category;
-import com.qunincey.shop.bean.PageBean;
-import com.qunincey.shop.bean.Product;
+import com.qunincey.shop.bean.*;
 import com.qunincey.shop.dao.ProductDao;
+import com.qunincey.shop.utils.DataSourceUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class ProductService {
 
@@ -82,4 +82,77 @@ public class ProductService {
         }
         return product;
     }
+
+    /*
+    * 存储订单
+    * */
+    public  void  submitOrder(Order order){
+
+        ProductDao productDao=new ProductDao();
+        try {
+            /*开始事务*/
+            DataSourceUtils.startTransaction();
+            productDao.addOrders(order);
+            productDao.addOrderItem(order);
+        } catch (SQLException e) {
+            try {
+                DataSourceUtils.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }finally {
+            try {
+                DataSourceUtils.commitAndRelease();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void updateOrderAdrr(Order order) {
+        ProductDao productDao=new ProductDao();
+        try {
+            productDao.updateAdrr(order);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    /*
+    * 通过uid查询所有订单
+    *
+    * */
+    public List<Order> findAllOrder(String uid) {
+        ProductDao productDao=new ProductDao();
+        List<Order> list=null;
+        try {
+            list=productDao.findOrderById(uid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+
+    }
+
+    /*
+    * 通过订单id查询每个订单项
+    *
+    * */
+
+    public List<Map<String,Object>> findAllOrderItem(String oid) {
+        ProductDao productDao=new ProductDao();
+        List<Map<String,Object>> maplist=null;
+        try {
+            maplist=productDao.findOrderItemById(oid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maplist;
+
+
+    }
+
 }
